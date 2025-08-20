@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diary-frontend
+  namespace: diary
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: diary-frontend }
+  template:
+    metadata:
+      labels: { app: diary-frontend }
+    spec:
+      containers:
+        - name: web
+          image: diary-frontend:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: diary-frontend
+  namespace: diary
+spec:
+  selector:
+    app: diary-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+```
