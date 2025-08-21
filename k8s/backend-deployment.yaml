@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: diary-backend:1.0
+          image: diary-backend:2.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
