@@ -6,10 +6,12 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: mysql }
+    matchLabels:
+      app: mysql
   template:
     metadata:
-      labels: { app: mysql }
+      labels:
+        app: mysql
     spec:
       containers:
         - name: mysql
@@ -18,13 +20,25 @@ spec:
             - containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_ROOT_PASSWORD } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_DATABASE } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_DATABASE
             - name: MYSQL_USER
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_USER } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_USER
             - name: MYSQL_PASSWORD
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_PASSWORD } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_PASSWORD
           volumeMounts:
             - name: initdb
               mountPath: /docker-entrypoint-initdb.d
@@ -45,4 +59,3 @@ spec:
     - name: mysql
       port: 3306
       targetPort: 3306
-```
