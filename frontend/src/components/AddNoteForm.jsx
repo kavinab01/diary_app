@@ -1,41 +1,28 @@
-import { useState, useEffect } from 'react';
-import AddNoteForm from './AddNoteForm';
+import React, { useState } from "react";
 
-export default function Notes() {
-  const [notes, setNotes] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+function AddNoteForm({ addNote }) {
+  const [text, setText] = useState("");
 
-  // Fetch notes when selectedDate changes
-  useEffect(() => {
-    fetch(`/api/notes?date=${selectedDate}`)
-      .then(res => res.json())
-      .then(data => setNotes(data))
-      .catch(err => console.error(err));
-  }, [selectedDate]);
-
-  // Add a new note
-  const handleAdd = (text) => {
-    fetch(`/api/notes?date=${selectedDate}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ note_text: text })
-    })
-      .then(res => res.json())
-      .then(newNote => setNotes(prev => [...prev, newNote]))
-      .catch(err => console.error(err));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (text.trim()) {
+      addNote(text);
+      setText("");
+    }
   };
 
   return (
-    <div>
-      <input 
-        type="date" 
-        value={selectedDate} 
-        onChange={e => setSelectedDate(e.target.value)} 
+    <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
+      <input
+        type="text"
+        placeholder="Enter note..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        style={{ width: "70%", padding: 8 }}
       />
-      <AddNoteForm onAdd={handleAdd} />
-      <ul>
-        {notes.map(note => <li key={note.id}>{note.note_text}</li>)}
-      </ul>
-    </div>
+      <button type="submit" style={{ padding: 8, marginLeft: 10 }}>Add</button>
+    </form>
   );
 }
+
+export default AddNoteForm;
