@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_BASE = "http://127.0.0.1:8000";
+
 export default function AddNoteForm({ date, onAdd }) {
   const [text, setText] = useState("");
 
@@ -8,7 +10,7 @@ export default function AddNoteForm({ date, onAdd }) {
     e.preventDefault();
     if (!text) return;
     try {
-      const res = await axios.post("/api/notes", {
+      const res = await axios.post(`${API_BASE}/api/notes`, {
         note_date: date,
         note_text: text
       });
