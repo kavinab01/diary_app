@@ -4,21 +4,21 @@ metadata:
   name: diary-ingress
   namespace: diary
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
     - host: diary.local
       http:
         paths:
-          - path: /(.*)
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: diary-frontend
                 port:
                   number: 80
-          - path: /api/?(.*)
+          - path: /api
             pathType: Prefix
             backend:
               service:
