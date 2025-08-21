@@ -1,52 +1,53 @@
-import { useEffect, useState, useMemo } from 'react'
-import axios from 'axios'
-import DateSelector from './components/DateSelector'
-import NotesTable from './components/NotesTable'
-import AddNoteForm from './components/AddNoteForm'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import DateSelector from "./components/DateSelector";
+import NotesTable from "./components/NotesTable";
+import AddNoteForm from "./components/AddNoteForm";
 
-const api = axios.create({ baseURL: '/api' })
+function App() {
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [notes, setNotes] = useState([]);
 
-export default function App(){
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0,10))
-  const [notes, setNotes] = useState([])
-  const [loading, setLoading] = useState(false)
-
-  const fetchNotes = async (d=date) => {
-    setLoading(true)
-    try{
-      const { data } = await api.get('/notes', { params: { date: d } })
-      setNotes(data)
-    } finally{
-      setLoading(false)
+  const fetchNotes = async (date) => {
+    try {
+      const res = await axios.get(`/api/notes?date=${date}`);
+      setNotes(res.data);
+    } catch (err) {
+      console.error(err);
+      setNotes([]);
     }
-  }
+  };
 
-  useEffect(() => { fetchNotes(date) }, [date])
+  useEffect(() => {
+    fetchNotes(selectedDate);
+  }, [selectedDate]);
 
-  const handleAdd = async (text) => {
-    if(!text.trim()) return
-    const payload = { note_date: date, note_text: text }
-    const { data } = await api.post('/notes', payload)
-    setNotes(prev => [data, ...prev])
-  }
+  const addNote = async (noteText) => {
+    try {
+      await axios.post("/api/notes", { note_date: selectedDate, note_text: noteText });
+      fetchNotes(selectedDate);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  const handleDelete = async (id) => {
-    await api.delete(`/notes/${id}`)
-    setNotes(prev => prev.filter(n => n.id !== id))
-  }
+  const deleteNote = async (id) => {
+    try {
+      await axios.delete(`/api/notes/${id}`);
+      fetchNotes(selectedDate);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <div className="container">
-      <header>
-        <h2>Daily Diary</h2>
-        <DateSelector value={date} onChange={setDate} />
-      </header>
-
-      {loading ? <p>Loading…</p> : (
-        <NotesTable notes={notes} onDelete={handleDelete} />
-      )}
-
-      <AddNoteForm onAdd={handleAdd} />
+    <div style={{ maxWidth: 800, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
+      <h1>Daily Diary</h1>
+      <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      <AddNoteForm addNote={addNote} />
+      <NotesTable notes={notes} deleteNote={deleteNote} />
     </div>
-  )
+  );
 }
+
+export default App;
