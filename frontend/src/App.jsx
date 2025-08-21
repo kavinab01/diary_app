@@ -5,7 +5,7 @@ import NotesTable from './components/NotesTable.jsx';
 import AddNoteForm from './components/AddNoteForm.jsx';
 
 // Use the environment variable for API base URL (falls back to diary.local)
-const API_BASE = "http://192.168.49.2:30080";
+const API_BASE = "http://diary-backend.diary.svc.cluster.local:8000";
 
 function App() {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
