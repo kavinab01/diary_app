@@ -13,9 +13,7 @@ DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAM
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Dependency
-from contextlib import contextmanager
-@contextmanager
+# ✅ Dependency for FastAPI
 def get_db():
     db = SessionLocal()
     try:
