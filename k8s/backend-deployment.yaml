@@ -16,7 +16,7 @@ spec:
       containers:
         - name: api
           image: diary-backend:3.0
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           ports:
             - containerPort: 8000
           env:
