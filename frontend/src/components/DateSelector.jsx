@@ -1,6 +1,19 @@
-export default function DateSelector({ value, onChange }){
+import React from "react";
+
+function DateSelector({ selectedDate, setSelectedDate }) {
   return (
-    <input type="date" value={value}
-      onChange={e => onChange(e.target.value)} />
-  )
+    <div style={{ marginBottom: 20 }}>
+      <label>
+        Select Date:{" "}
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+        />
+      </label>
+    </div>
+  );
 }
+
+export default DateSelector;
+
