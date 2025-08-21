@@ -2,8 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import date
-from .database import get_db
-from . import models, schemas
+from app.database import SessionLocal
+from app import crud, models, schemas
 
 app = FastAPI(title="Diary API", openapi_url="/api/openapi.json")
 
