@@ -6,10 +6,12 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: diary-backend }
+    matchLabels:
+      app: diary-backend
   template:
     metadata:
-      labels: { app: diary-backend }
+      labels:
+        app: diary-backend
     spec:
       containers:
         - name: api
@@ -19,15 +21,30 @@ spec:
             - containerPort: 8000
           env:
             - name: DB_HOST
-              valueFrom: { configMapKeyRef: { name: backend-config, key: DB_HOST } }
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_HOST
             - name: DB_PORT
-              valueFrom: { configMapKeyRef: { name: backend-config, key: DB_PORT } }
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_PORT
             - name: DB_NAME
-              valueFrom: { configMapKeyRef: { name: backend-config, key: DB_NAME } }
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_NAME
             - name: DB_USER
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_USER } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_USER
             - name: DB_PASS
-              valueFrom: { secretKeyRef: { name: mysql-secret, key: MYSQL_PASSWORD } }
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -40,4 +57,3 @@ spec:
   ports:
     - port: 8000
       targetPort: 8000
-```
