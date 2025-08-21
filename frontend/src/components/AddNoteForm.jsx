@@ -1,28 +1,34 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function AddNoteForm({ addNote }) {
+export default function AddNoteForm({ date, onAdd }) {
   const [text, setText] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (text.trim()) {
-      addNote(text);
+    if (!text) return;
+    try {
+      const res = await axios.post("/api/notes", {
+        note_date: date,
+        note_text: text
+      });
+      onAdd(res.data);
       setText("");
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
-      <input
-        type="text"
-        placeholder="Enter note..."
+    <form onSubmit={handleSubmit} style={{ marginBottom: '12px' }}>
+      <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        style={{ width: "70%", padding: 8 }}
+        placeholder="Write a note..."
+        rows={3}
+        style={{ width: '100%', marginBottom: '6px' }}
       />
-      <button type="submit" style={{ padding: 8, marginLeft: 10 }}>Add</button>
+      <button type="submit">Add Note</button>
     </form>
   );
 }
-
-export default AddNoteForm;
