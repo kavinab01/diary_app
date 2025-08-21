@@ -10,7 +10,7 @@ class NoteCreate(NoteBase):
 class Note(NoteBase):
     id: int
     note_text: str
-    created_at: str | None = None
+    created_at: datetime   
 
     class Config:
         from_attributes = True
