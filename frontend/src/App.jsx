@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import DateSelector from "./components/DateSelector";
-import NotesTable from "./components/NotesTable";
-import AddNoteForm from "./components/AddNoteForm";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import DateSelector from './components/DateSelector.jsx';
+import NotesTable from './components/NotesTable.jsx';
+import AddNoteForm from './components/AddNoteForm.jsx';
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState([]);
 
-  const fetchNotes = async (date) => {
+  const fetchNotes = async (selectedDate) => {
     try {
-      const res = await axios.get(`/api/notes?date=${date}`);
+      const res = await axios.get(`/api/notes?date=${selectedDate}`);
       setNotes(res.data);
     } catch (err) {
       console.error(err);
@@ -19,33 +19,19 @@ function App() {
   };
 
   useEffect(() => {
-    fetchNotes(selectedDate);
-  }, [selectedDate]);
+    fetchNotes(date);
+  }, [date]);
 
-  const addNote = async (noteText) => {
-    try {
-      await axios.post("/api/notes", { note_date: selectedDate, note_text: noteText });
-      fetchNotes(selectedDate);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const deleteNote = async (id) => {
-    try {
-      await axios.delete(`/api/notes/${id}`);
-      fetchNotes(selectedDate);
-    } catch (err) {
-      console.error(err);
-    }
+  const handleAddNote = (newNote) => {
+    setNotes([newNote, ...notes]);
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
+    <div className="container">
       <h1>Daily Diary</h1>
-      <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-      <AddNoteForm addNote={addNote} />
-      <NotesTable notes={notes} deleteNote={deleteNote} />
+      <DateSelector date={date} setDate={setDate} />
+      <AddNoteForm date={date} onAdd={handleAddNote} />
+      <NotesTable notes={notes} />
     </div>
   );
 }
