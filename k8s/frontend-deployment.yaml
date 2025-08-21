@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: diary-frontend:5.0
+          image: diary-frontend:6.0
           imagePullPolicy: Never
           ports:
             - containerPort: 80
