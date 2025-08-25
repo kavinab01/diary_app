@@ -1,25 +1,28 @@
 import React from 'react';
 
 export default function NotesTable({ notes }) {
-  if (!notes.length) return <p>No notes for this date.</p>;
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '12px' }}>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Note</th>
-          <th>Created At</th>
-        </tr>
-      </thead>
-      <tbody>
-        {notes.map(n => (
-          <tr key={n.id}>
-            <td>{n.id}</td>
-            <td>{n.note_text}</td>
-            <td>{new Date(n.created_at).toLocaleString()}</td>
+    <div style={{ marginTop: '16px' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+        <thead>
+          <tr>
+            <th style={{ borderBottom: '2px solid #ddd', padding: '8px', width: '50px' }}>ID</th>
+            <th style={{ borderBottom: '2px solid #ddd', padding: '8px' }}>Note</th>
+            <th style={{ borderBottom: '2px solid #ddd', padding: '8px', width: '200px' }}>Created At</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {notes.map((note) => (
+            <tr key={note.id}>
+              <td style={{ borderBottom: '1px solid #eee', padding: '8px' }}>{note.id}</td>
+              <td style={{ borderBottom: '1px solid #eee', padding: '8px' }}>{note.note_text}</td>
+              <td style={{ borderBottom: '1px solid #eee', padding: '8px' }}>
+                {new Date(note.created_at).toLocaleString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
