@@ -26,7 +26,11 @@ function App() {
   }, [date]);
 
   const handleAddNote = (newNote) => {
-    setNotes([newNote, ...notes]);
+    setNotes((prev) => [newNote, ...prev]); // prepend new note
+  };
+
+  const handleDeleteNote = (id) => {
+    setNotes((prev) => prev.filter((n) => n.id !== id)); // remove note locally
   };
 
   return (
@@ -34,7 +38,7 @@ function App() {
       <h1>Daily Diary</h1>
       <DateSelector date={date} setDate={setDate} />
       <AddNoteForm date={date} onAdd={handleAddNote} />
-      <NotesTable notes={notes} />
+      <NotesTable notes={notes} onDelete={handleDeleteNote} />
     </div>
   );
 }
